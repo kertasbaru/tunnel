@@ -24,13 +24,13 @@ serverV=$(curl -fsSL ${REPO}versi)
 localV=$(cat /opt/.ver)
 
 if [[ "$serverV" != "$localV" ]]; then
-  wget -qO update.sh "${REPO}menu/update.sh" && chnod +x update.sh && rm update.sh
+  wget -qO update.sh "${REPO}menu/update.sh" && chmod +x update.sh && rm update.sh
 fi
 
 cd
 
 today=$(date -d "0 days" +"%Y-%m-%d")
-Exp2=$(curl -sS https://raw.githubusercontent.com/kertasbaru/izin/main/ip | grep -wE $ipsaya | awk '{print $3}')
+Exp2=$(curl -sS https://raw.githubusercontent.com/kertasbaru/izin/main/ip | grep -wE "$MYIP" | awk '{print $3}')
 d1=$(date -d "$Exp2" +%s)
 d2=$(date -d "$today" +%s)
 certificate=$(( (d1 - d2) / 86400 ))

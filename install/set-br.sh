@@ -21,11 +21,10 @@ echo -e "  \033[96m🌍 Telegram: https://t.me/WuzzSTORE\033[0m"
 echo -e "  \033[96m📱 WhatsApp: https://wa.me/6287760204418\033[0m"
 echo -e ""
 echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
-rm -rf /root/*
 exit 1
 	fi
 wget -q ${REPO}install/limit.sh && chmod +x limit.sh && ./limit.sh
-apt install rclone
+apt install rclone -y
 printf "q\n" | rclone config
 # wget -qO /root/.config/rclone/rclone.conf "https://drive.google.com/u/4/uc?id=19BP0A8pad2tc9ELmx8JcQPxNKRWP4S6M"
 wget -qO /root/.config/rclone/rclone.conf "https://drive.google.com/u/4/uc?id=1Lg8L12_Wwh3IDXSPF7xESVC_xEzlk081"

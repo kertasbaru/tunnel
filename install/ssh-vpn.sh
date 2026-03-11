@@ -27,7 +27,7 @@ exit 1
 export DEBIAN_FRONTEND=noninteractive
 MYIP=$(cat /usr/bin/.ipvps)
 MYIP2="s/xxxxxxxxx/$MYIP/g"
-NET=$(ip -o $ANU -4 route show to default | awk '{print $5}')
+NET=$(ip -o -4 route show to default | awk '{print $5}')
 if [[ -f /etc/os-release ]]; then
     . /etc/os-release
     OS_NAME=$ID
@@ -201,7 +201,7 @@ cd vnstat-2.6
 ./configure --prefix=/usr --sysconfdir=/etc && make && make install
 cd
 vnstat -i $NET
-sed -i 's/Interface "'""eth0""'"/Interface "'""$NET""'"/g' /etc/vnstat.conf
+sed -i "s/Interface \"eth0\"/Interface \"$NET\"/g" /etc/vnstat.conf
 chown vnstat:vnstat /var/lib/vnstat -R
 systemctl enable vnstat
 /etc/init.d/vnstat restart

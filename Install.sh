@@ -279,7 +279,7 @@ install_ssh() {
   wget -qO insshws.sh "${REPO}sshws/insshws.sh"
   chmod +x insshws.sh
   ./insshws.sh
-  rn insshws.sh
+  rm insshws.sh
   
   wget -qO /usr/local/share/xray/geosite.dat "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat"
   wget -qO /usr/local/share/xray/geoip.dat "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat"

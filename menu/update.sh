@@ -27,7 +27,7 @@ NODE_VERSION=$(node -v 2>/dev/null | grep -oP '(?<=v)\d+' || echo "0")
 
 if [ "$NODE_VERSION" -lt 22 ]; then
   msg_info "${YELLOW}Installing or upgrading NodeJS to version 22${RESET}"
-  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - || msg_err "${RED}Failed to download NodeJS setup${RESER}"
+  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - || msg_err "${RED}Failed to download NodeJS setup${RESET}"
   apt-get install -y nodejs || msg_err "${RED}Failed to install NodeJS${RESET}"
   npm install -g npm@latest
 else
@@ -249,7 +249,7 @@ SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 */10 * * * * root /usr/bin/clearlog
 END
-cat> /etc/cron.d/logclean << END
+cat> /etc/cron.d/clearcache << END
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 0 0 * * * root /usr/bin/clearcache
