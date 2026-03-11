@@ -71,7 +71,7 @@ fi
 
 if ! command -v gdown &> /dev/null; then
     source /etc/os-release
-    if [[ ("$ID" == "ubuntu" && "${VERSION_ID%%.*}" -ge 24) || ("$ID" == "debian" && "${VERSION_ID%%.*}" -ge 12) ]]; then
+    if [[ "$ID" == "ubuntu" && "${VERSION_ID%%.*}" -ge 24 ]] || [[ "$ID" == "debian" && "${VERSION_ID%%.*}" -ge 12 ]]; then
         apt update -y &> /dev/null && apt install -y python3-full python3-pip &> /dev/null
 		pip install --break-system-packages gdown &> /dev/null
     else

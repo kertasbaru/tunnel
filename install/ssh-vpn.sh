@@ -105,6 +105,8 @@ wget -O /etc/nginx/conf.d/xray.conf "${REPO}install/xray.conf"
 PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;' 2>/dev/null || echo "")
 if [[ -n "$PHP_VERSION" && -f "/etc/php/${PHP_VERSION}/fpm/pool.d/www.conf" ]]; then
   sed -i 's/listen = \/var\/run\/php-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
+else
+  echo "Peringatan: PHP-FPM config tidak ditemukan, melewati konfigurasi listen address."
 fi
 mkdir -p /home/vps/public_html
 echo "<?php phpinfo() ?>" > /home/vps/public_html/info.php
