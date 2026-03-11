@@ -22,7 +22,6 @@ echo -e "  \033[96m🌍 Telegram: https://t.me/WuzzSTORE\033[0m"
 echo -e "  \033[96m📱 WhatsApp: https://wa.me/6287760204418\033[0m"
 echo -e ""
 echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
-rm -rf /root/*
 exit 1
 	fi
 export DEBIAN_FRONTEND=noninteractive
@@ -103,7 +102,10 @@ curl ${REPO}install/nginx.conf > /etc/nginx/nginx.conf
 curl ${REPO}install/vps.conf > /etc/nginx/conf.d/vps.conf
 wget -O /etc/haproxy/haproxy.cfg "${REPO}/install/haproxy.cfg"
 wget -O /etc/nginx/conf.d/xray.conf "${REPO}install/xray.conf"
-sed -i 's/listen = \/var\/run\/php-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php/fpm/pool.d/www.conf
+PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;' 2>/dev/null || echo "")
+if [[ -n "$PHP_VERSION" && -f "/etc/php/${PHP_VERSION}/fpm/pool.d/www.conf" ]]; then
+  sed -i 's/listen = \/var\/run\/php-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
+fi
 mkdir -p /home/vps/public_html
 echo "<?php phpinfo() ?>" > /home/vps/public_html/info.php
 chown -R www-data:www-data /home/vps/public_html
@@ -125,12 +127,13 @@ chmod +x /root/.acme.sh/acme.sh
 ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc
 
 # nginx renew ssl
+cat > /usr/local/bin/ssl_renew.sh << 'END'
 #!/bin/bash
 /etc/init.d/nginx stop
 "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" &> /root/renew_ssl.log
 /etc/init.d/nginx start
 /etc/init.d/nginx status
-' > /usr/local/bin/ssl_renew.sh
+END
 chmod +x /usr/local/bin/ssl_renew.sh
 if ! grep -q 'ssl_renew.sh' /var/spool/cron/crontabs/root;then (crontab -l;echo "15 03 */3 * * /usr/local/bin/ssl_renew.sh") | crontab;fi
 
@@ -171,8 +174,8 @@ echo "/usr/sbin/nologin" >> /etc/shells
 wget -q ${REPO}install/setrsyslog.sh && chmod +x setrsyslog.sh && ./setrsyslog.sh
 
 if [[ "$OS_NAME" == "debian" && "$OS_VERSION" == "10" ]] || [[ "$OS_NAME" == "ubuntu" && "$OS_VERSION" == "20.04" ]]; then
-    echo "Menginstal squid3 untuk Debian 10 atau Ubuntu 20.04..."
-    apt -y install squid3
+    echo "Menginstal squid untuk Debian 10 atau Ubuntu 20.04..."
+    apt -y install squid
 else
     echo "Menginstal squid untuk versi lain..."
     apt -y install squid
@@ -183,7 +186,7 @@ wget -O /etc/squid/squid.conf "${REPO}install/squid3.conf"
 
 # Ganti placeholder dengan alamat IP
 echo "Mengganti placeholder IP dengan alamat IP saat ini..."
-sed -i $MYIP2 /etc/squid/squid.conf
+sed -i "$MYIP2" /etc/squid/squid.conf
 
 echo "Instalasi dan konfigurasi Squid selesai."
 # setting vnstat

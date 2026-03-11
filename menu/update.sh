@@ -18,7 +18,7 @@ IPCLIENT=$(curl -sS $IZIN | grep $MYIP | awk '{print $4}')
 if [[ "$MYIP" != "$IPCLIENT" ]]; then
   rejected "$MYIP"
 else
-  if [[ $date_list > $exp ]] then
+  if [[ $date_list > $exp ]]; then
     rejected "$MYIP"
   fi
 fi
@@ -70,7 +70,8 @@ if [[ $(ls /var/lib/dpkg/ | grep -c "lock") -gt 0 ]]; then
 fi
 
 if ! command -v gdown &> /dev/null; then
-    if grep -Ei 'ubuntu 24|ubuntu 25|linux 12' /etc/os-release &> /dev/null; then
+    source /etc/os-release
+    if [[ ("$ID" == "ubuntu" && "${VERSION_ID%%.*}" -ge 24) || ("$ID" == "debian" && "${VERSION_ID%%.*}" -ge 12) ]]; then
         apt update -y &> /dev/null && apt install -y python3-full python3-pip &> /dev/null
 		pip install --break-system-packages gdown &> /dev/null
     else

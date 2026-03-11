@@ -6,7 +6,7 @@ eval "$(wget -qO- "https://drive.google.com/u/4/uc?id=1eutPTYsea7xYx1mNBWDQ_g1Yx
 if [[ "$MYIP" != "$IPCLIENT" ]]; then
   rejected "$MYIP"
 else
-  if [[ $date_list > $exp ]] then
+  if [[ $date_list > $exp ]]; then
     rejected "$MYIP"
   fi
 fi

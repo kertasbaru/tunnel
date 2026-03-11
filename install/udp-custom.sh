@@ -15,7 +15,7 @@ IPCLIENT=$(curl -sS $url_izin | grep $MYIP | awk '{print $4}')
 if [[ "$MYIP" != "$IPCLIENT" ]]; then
   rejected "$MYIP"
 else
-  if [[ $date_list > $exp ]] then
+  if [[ $date_list > $exp ]]; then
     rejected "$MYIP"
   fi
 fi
